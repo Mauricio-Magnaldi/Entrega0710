@@ -1,6 +1,29 @@
-<h2>Bienvenido {{first_name}}{{last_name}}</h2>
-<h3>Los productos disponibles son:</h3>
-<p>Nombre    Precio</p>
-{{#each products}}
-<p>{{name}}: {{price}}</p>
-{{/each}}
+<table>
+    <thead>
+        <tr>
+            <th>Titulo</th>
+            <th>Descripcion</th>
+            <th>Codigo</th>
+            <th>Precio</th>
+            <th>Stado</th>
+            <th>Stock</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{description}}</td>
+            <td>{{code}}</td>
+            <td>{{price}}</td>
+            <td>{{status}}</td>
+            <td>{{stock}}</td>
+            <td>{{category}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

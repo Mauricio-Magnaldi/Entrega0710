@@ -1,14 +1,19 @@
 import { Schema, model } from "mongoose";
 
 const cartsSchema = new Schema({
-    idProduct:{
-        type: String,
-        required: true
-    },
-    quantity:{
-        type: Number,
-        required: true
-    }
+    products: [
+ /*/
+        {
+            productId: {
+                type: mongoose.SchemaType.ObjectId,
+                ref: "Products",
+            },
+            quantity: {
+                type: Number,
+            }    
+        }
+  */
+    ]
 });
 
 export const cartsModel = model("Carrito", cartsSchema);

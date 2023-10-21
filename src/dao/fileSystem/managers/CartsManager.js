@@ -45,10 +45,10 @@ class CartsManager{
                 }
             }
 
-        async getProductFromCartById(idProduct){
+        async getProductFromCartById(productId){
             try {    
                 const products = await this.getProductsOnCart({});
-                const product = products.find(product => product.id === idProduct);
+                const product = products.find(product => product.id === productId);
                 return product;
             } catch (error) {
                 return error;
@@ -109,7 +109,7 @@ class CartsManager{
             return cart;
 
         } catch (error) {
-            return error
+            return error;
         }
     };    
 

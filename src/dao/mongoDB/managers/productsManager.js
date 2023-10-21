@@ -1,14 +1,20 @@
 import { productsModel } from "../../models/products.model.js";
 import BasicManager from './basicManager.js';
 
-class ProductsManager extends BasicManager {
+//CRUD de productsManager
 
+class ProductsManager extends BasicManager {
     constructor() {
+        //Método para pasar el modelo el cual quiero que utilice BasicManager
         super(productsModel);
     }
-
-    //Aquí puedo agregar el método propio de productsManager
-
+   /*
+    //Aquí puedo agregar el método propio de products
+    async findAllProducts(object) {
+        const { limit=10, page=1, sort, ...queryFilter } = object;
+        const respuesta = await productsModel.paginate(queryFilter,{limit, page, sort: {price}});
+    }
+*/
 /*    async findAll(){
         return productsModel.find();
     }

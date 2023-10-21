@@ -1,8 +1,8 @@
+//Importo el modulo de ruteo dentro de express
 import { Router} from "express";
 import { cartsManager } from "../dao/mongoDB/managers/cartsManager.js";
 
 const router = Router();
-
 
 router.get("/", async (requerimiento, respuesta) => {
     try {
@@ -13,19 +13,21 @@ router.get("/", async (requerimiento, respuesta) => {
     }
 });
 
-router.get("/:idCart", async (requerimiento, respuesta) => {
-    const {idCart} = requerimiento.params;
+/*
+router.get("/:cartId", async (requerimiento, respuesta) => {
+    const {cartId} = requerimiento.params;
     try {
-        const product = await cartsManager.findById(idCart);
+        const product = await cartsManager.findById(cartId);
         respuesta.status(200).json({mensaje: "Carrito", carrito});
     } catch (error) {
         respuesta.status(500).json({error: error.mensaje});
     }
 });
+*/
 
 router.post("/", async (requerimiento, respuesta) => {
-    const {idProduct, quantity} = requerimiento.body;
-    if (!idProduct || !quantity) {
+    const {productId, quantity} = requerimiento.body;
+    if (!productId || !quantity) {
         return respuesta.status(400).json({mensaje: "Todos los datos son obligatorios."});
     }
     try {
@@ -36,20 +38,18 @@ router.post("/", async (requerimiento, respuesta) => {
     }
 });
 
-router.delete('/:idProduct', async (request, response) => {
-    const {idProduct} = request.params;
+router.delete('/:producId', async (requerimiento, respuesta) => {
+    const {productId} = requerimiento.params;
     try {
-        const product = await productsManager.deleteProduct(+idProduct);
+        const product = await productsManager.deleteProduct(+productId);
         if (product) {
-            response.status(200).json({mensaje: `Producto con id: ${idProduct} encontrado. Eliminado.`});
+            respuesta.status(200).json({mensaje: `Producto con id: ${productId} encontrado. Eliminado.`});
         } else {
-            response.status(400).json({mensaje: `Código de Error 404. Producto con id: ${idProduct} no encontrado.`});
+            respuesta.status(400).json({mensaje: `Código de Error 404. Producto con id: ${productId} no encontrado.`});
         }
     } catch (error) {
-        response.status(500).json({mensaje: error});
+        respuesta.status(500).json({mensaje: error});
     }
 });
-
-
 
 export default router;

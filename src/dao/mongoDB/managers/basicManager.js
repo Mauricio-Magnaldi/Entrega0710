@@ -5,6 +5,9 @@ export default class BasicManager {
     }
 
     async findAll(){
+/*
+El método .lean() se usa a menudo en combinación con consultas de bases de datos para obtener los resultados en forma de objetos JavaScript simples
+*/     
         return this.model.find().lean();
     }
 
@@ -13,7 +16,8 @@ export default class BasicManager {
     }
 
     async createOne(object){
-        return this.model.createOne(object);
+        //Conservar el metodo create, de lo contrario no lo almacena.
+        return this.model.create(object);
     }
 
     async updateOne(id, object){
@@ -23,4 +27,4 @@ export default class BasicManager {
     async deleteOne(id){
         return this.model.deleteOne({_id:id});
     }
-}
+};
