@@ -20,6 +20,10 @@ router.get("/deleteproduct", (requerimiento, respuesta) => {
     respuesta.render("deleteProduct");
 });
 
+router.get("/createcart", (requerimiento, respuesta) => {
+    respuesta.render("createcart");
+});
+
 router.get("/home", async (requerimiento, respuesta) => {
     const products = await productsManager.getProducts();
     respuesta.render("home", {products});

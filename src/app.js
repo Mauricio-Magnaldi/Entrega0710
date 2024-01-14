@@ -2,6 +2,7 @@ import express from 'express';
 import handlebars from "express-handlebars";
 //Coloco los archivos con las diversas rutas en la carpeta router
 import cartsRouter from './router/carts.router.js';
+//import messagesRouter from './router/messages.router.js';
 import productsRouter from './router/products.router.js';
 import usersRouter from './router/users.router.js';
 import viewsRouter from './router/views.router.js';
@@ -9,10 +10,9 @@ import { __dirname } from "./utils.js";
 import "./dao/configDB.js";
 //Para crear el socketServer
 import { Server } from "socket.io";
-import {
-    getAllProductsHandler,
-    messagesHandler,
-  } from "./handlers/handlers.js";
+import swaggerUi from "swagger-ui-express"
+import { swaggerSetup } from './swaggerSpecs.js';
+
 
 //Guardo en app toda la funcionalidad del servidor de express
 const app = express();
@@ -46,17 +46,28 @@ app.use('/', viewsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/products', productsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSetup))
+
 
 const httpServer = app.listen(PORT,() => {
     console.log(`Conectado al puerto ${PORT}.`);
 });
 
 //websocket server
-const socketServer = new Server(httpServer);
-const onConnection = async (socket) => {
-    await getAllProductsHandler(socketServer, socket);
-    await messagesHandler(socketServer, socket);
-  };
-  
-  socketServer.on("connection", onConnection);
-  
+const socketServer = new Server(httpServer)
+
+const mensajes = []
+
+socketServer.on("connection",(socket) => {
+  socket.on("nuevoUsuario",(usuario) => { 
+
+  socket.broadcast.emit("nuevoUsuarioBroadcast", usuario)
+  })
+
+  socket.on("mensaje", info => {
+    mensajes.push(info)
+    socketServer.emit("chat", mensajes)
+  })
+
+})
+
