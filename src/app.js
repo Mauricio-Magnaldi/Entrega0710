@@ -9,6 +9,10 @@ import { __dirname } from "./utils.js";
 import "./dao/configDB.js";
 //Para crear el socketServer
 import { Server } from "socket.io";
+import {
+    getAllProductsHandler,
+    messagesHandler,
+  } from "./handlers/handlers.js";
 
 //Guardo en app toda la funcionalidad del servidor de express
 const app = express();
@@ -49,44 +53,10 @@ const httpServer = app.listen(PORT,() => {
 
 //websocket server
 const socketServer = new Server(httpServer);
-const mensajes = [];
-
-socketServer.on('connection', (socket) => {
-    socket.on('nuevoUsuario', (usuario) => {
-        socket.broadcast.emit('nuevoUsuarioBroadcast', usuario)
-    });
-
-    socket.on("mensaje", (info) => {
-        mensajes.push(info);
-        socketServer.emit("chat", mensajes);
-    })
-});
-
-
-//const nombresChat = [];
-//Eventos definidos por default en socket.io, connection y disconnect
-/*
- socketServer.on("connection", (socketS) => {
-    //console.log(`Cliente conectado socket.id: ${socketS.id}.`);
-    socketS.on("disconnect", () => {
-        //console.log(`Cliente desconectado socket.id: ${socketS.id}.`);    
-    });
-
-    socketS.on("eventoDesdeElCliente", (info) => {
-        //nombresChat.push(info);
-        //console.log(`El usuario ${info} está en el chat.`);
-        //console.log(`Array de nombres en el chat ${nombresChat}.`);    
-        
-        //Tres formas de responder desde el lado del servidor.
-        //Evento directo al cliente que se comunico.
-        //socketS.emit("eventoDesdeElServidor", nombresChat);
-        
-        //Evento directo a todos los clientes conectados.
-        //socketServer.emit("eventoDesdeElServidor", nombresChat);
-        
-        //Evento directo a todos los clientes conectados excepto al quer se comunico con el servidor.
-        //socket.broadcast.emit("eventoDesdeElServidor", nombresChat);
-        socketServer.emit("eventoDesdeElServidor", info);
-    });
-});
-*/
+const onConnection = async (socket) => {
+    await getAllProductsHandler(socketServer, socket);
+    await messagesHandler(socketServer, socket);
+  };
+  
+  socketServer.on("connection", onConnection);
+  

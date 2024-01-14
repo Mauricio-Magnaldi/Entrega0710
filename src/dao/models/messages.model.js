@@ -11,6 +11,6 @@ const messagesSchema = new Schema({
     },
 });
 
-export const chatsModel = model("Messages", messagesSchema);
+export const messagesModel = model("Messages", messagesSchema);
 
 

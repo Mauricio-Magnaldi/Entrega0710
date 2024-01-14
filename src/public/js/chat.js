@@ -1,9 +1,11 @@
 const socketClient = io();
+
 let messages = [];
 let error = "";
 const chat = document.getElementById("chat");
 
-socketClient.emit("getMessages");
+
+//socketClient.emit("getMessages");
 
 socketClient.on("newMessages", (_messages) => {
   messages = [..._messages];
@@ -28,8 +30,9 @@ messageForm.onsubmit = async (e) => {
 function validMessage(_message) {
   return _message.user && _message.message;
 }
-
+//Compilar chat
 function compileChat() {
+  //En la constante chatTemplate se carga el array de mensajes.
   const chatTemplate = messages
     .map((_message) => `<li>${_message.user}: ${_message.message}</li>`)
     .join(" ");

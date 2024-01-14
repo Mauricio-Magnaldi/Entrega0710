@@ -1,0 +1,71 @@
+paths:
+
+  /api/users:
+    get:
+      tags: 
+        - Users
+      summary: Obtener todos los usuarios.
+      responses:
+        "200":
+          description: Todos los usuarios
+        "400":
+          description: Algunos datos se han perdido
+        "500":
+          description: Error del servidor
+ 
+  /api/users/{id}:
+    get:
+      tags: 
+        - Users
+      summary: Obtener un usuario por id.
+      parameters: 
+        - name: id
+          in: path
+          description: Identificador del usuario
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: El usuario
+          content: 
+            application/json:
+              schemas:
+                $ref: "#/components/schemas/User"
+              example:
+                id: 6530a267fdf39e887faaae08
+                first_name: Antonio
+                last_name: Gil
+                email: agil@gmail.com
+ 
+        "400":
+          description: Dato incorrecto
+        "500":
+          description: Error del servidor
+  
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string 
+        first_name: 
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        required:
+          - first_name
+          - last_name
+          - email
+          - password
+
+      example: 
+        id: 6530a267fdf39e887faaae08
+        first_name: Antonio
+        last_name: Gil
+        email: agil@gmail.com
